@@ -1,6 +1,7 @@
 <?php
 require_once '../php/helper.php';
 
+// Al querer cerrar sesión, simplemente la quitamos
 unset($_SESSION['user_id']);
 //$_SESSION = array();
 
@@ -14,4 +15,5 @@ unset($_SESSION['user_id']);
 
 // session_destroy();
 
+// Y redirigimos al login
 redirect('login.php');

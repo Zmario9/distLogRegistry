@@ -1,16 +1,20 @@
 <?php
+##Importes del login
 require_once '../php/helper.php';
 require_once '../php/database.php';
 
+#Si todavía el usuario está loggeado, reedirige al dashboard, como en la mayoría de paginas web
 if (is_logged_in())
     redirect('dashboard.php');
 
+#Arreglo que guardará los errores
 $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // 1. Recolección y saneamiento de datos
-    // Usar FILTER_SANITIZE_FULL_SPECIAL_CHARS para mayor seguridad
+    // Filtro el input de usuario con un saneamiento completo para prevenir inyecciones peponas que provoca la desvivicion del servidor o algo peor
     $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    //Nada que hacer con la contraseña más que obtenerla
     $password = $_POST['password'] ?? '';
 
     // 2. Validaciones (mínimas para login)
@@ -18,17 +22,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors[] = "Por favor, introduce usuario y contraseña.";
     }
 
+    // 3. Procesar si no hay errores
     if (empty($errors)) {
+        //Busca usuario en la "base de datos"
         $user_data = find_user($username);
-
-        // 3. Verificación de usuario y contraseña
+        // 4. Verificación de usuario y contraseña
         if ($user_data && password_verify($password, $user_data['password_hash'])) {
             // Inicio de sesión exitoso
             $_SESSION['user_id'] = $user_data['email'];
-
-            // Re-generación de ID de sesión (Buena Práctica de Seguridad)
+            // Re-generación de ID de sesión (Buena Práctica de Seguridad porque creo que eso se mantiene en caché )
             session_regenerate_id(true);
-
+            // Redirige al dashboard
             redirect('dashboard.php');
         } else {
             $errors[] = "Usuario o contraseña incorrectos.";
@@ -43,13 +47,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../styles/globalStyles.css">
-    <!-- Asumo que este es el archivo CSS que proporcionaste para la edición -->
+    <!-- ESTILOS -->
     <link rel="stylesheet" href="../styles/LoginStyles/loginStyles.css">
     <link rel="icon" type="image/png" href="../img/iniciar-sesion.png">
     <title>Login</title>
 </head>
 
 <body>
+    <!-- Mensajes relacionados con el exito o fracaso del registro desde registro.php-->
     <?php if (isset($_GET['success']) && $_GET['success'] === 'registered'): ?>
         <p class="successful_registration" style="color: green;">¡Registro exitoso! Por favor, inicia sesión.</p>
     <?php endif; ?>
@@ -57,8 +62,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <p class="registration_unsuccessful" style="color: red;">Necesitas iniciar sesión para acceder al Dashboard.</p>
     <?php endif; ?>
 
+    <!-- Lo mismo que en registro para mostrar errores de validacion -->
     <?php if (!empty($errors)): ?>
-        <!-- AÑADIDO: Clase 'validation-errors' y eliminado el estilo inline -->
         <div class="validation-errors" role="alert">
             <ul>
                 <?php foreach ($errors as $error): ?>

@@ -10,7 +10,7 @@ body {
   margin-bottom: 100px;
 }
 
-/* --- Login Container (Form itself) --- */
+/* --- Login Container --- */
 .container_form {
   background-color: #1f1f1f;
   padding: 40px;
@@ -171,9 +171,7 @@ section {
 }
 
 .validation-errors ul {
-  list-style-type: none; /* Usamos el disco para que se vea como lista /
-margin: 0;
-padding-left: 20px; / Espacio para los puntos de la lista */
+  list-style-type: none;
 }
 
 .validation-errors li {
