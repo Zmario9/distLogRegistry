@@ -13,6 +13,7 @@ function register_user($email, $nickname, $password) {
     if (isset($users[$email])) {
         return false;
     }
+    // Si el nickname ya existe, no permite el registro
     foreach ($users as $user_data) {
         if ($user_data['nickname'] === $nickname) {
             return false;
@@ -28,11 +29,13 @@ function register_user($email, $nickname, $password) {
     return true;
 }
 
+//Función para buscar a un usuario por email
 function find_user($email) {
     global $users;
     return $users[$email] ?? null;
 }
 
+//Buscarlo pero por nickname
 function find_user_by_nickname($nickname) {
     global $users;
     foreach ($users as $user_data) {
