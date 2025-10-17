@@ -1,7 +1,7 @@
-<?php
-require_once '../php/helper.php';
-require_once '../php/database.php';
-require_once '../php/registryManagement.php';
+<?php 
+require_once '../php/helper.php'; 
+require_once '../php/database.php'; 
+require_once '../php/registryManagement.php'; 
 ?>
 
 <!DOCTYPE html>
@@ -10,15 +10,15 @@ require_once '../php/registryManagement.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="registerStyles.css">
+    <link rel="shortcut icon" href="/img/agregar.png" type="image/png">
     <link rel="stylesheet" href="../styles/globalStyles.css">
-    <link rel="stylesheet" href="../styles/RegisterStyles/registerForm.css">
     <title>Register</title>
 </head>
 
 <body>
-    <h1>Registro de Usuario</h1>
     <?php if (!empty($errors)): ?>
-        <div class="error-messages">
+        <div class="error-messages" style="color: red;">
             <ul>
                 <?php foreach ($errors as $error): ?>
                     <li><?php echo htmlspecialchars($error); ?></li>
@@ -32,7 +32,7 @@ require_once '../php/registryManagement.php';
         <p class="signup-prompt">¡Únete a nuestra plataforma!</p>
 
         <section>
-            <input class="input_field" type="text" id="nickname" name="nickname" required
+            <input class="input_field" type="text" id="username" name="username" required
                 value="<?php echo htmlspecialchars($username ?? ''); ?>" placeholder="Nombre de usuario">
         </section>
 
@@ -47,15 +47,14 @@ require_once '../php/registryManagement.php';
         </section>
 
         <section>
-            <input class="input_field password_input confirm_password_input" type="password" id="confirm_password"
-                name="confirm_password" required placeholder="Confirmar Contraseña">
+            <input class="input_field password_input confirm_password_input" type="password" id="confirm_password" name="confirm_password" required
+                placeholder="Confirmar Contraseña">
         </section>
 
         <button class="submit_button" type="submit">Registrar</button>
 
         <p class="register">¿Ya tienes cuenta? <a class="register__link" href="login.php">Iniciar Sesión</a></p>
     </form>
-    <p>¿Ya tienes cuenta? <a href="login.php">Iniciar Sesión</a></p>
 </body>
 
 </html>

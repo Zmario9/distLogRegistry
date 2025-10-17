@@ -14,6 +14,6 @@ function redirect($location)
 function require_login()
 {
     if (!is_logged_in()) {
-        redirect('../views/login.php');
+        redirect('../views/login.php?error=unauthorized');
     }
 }

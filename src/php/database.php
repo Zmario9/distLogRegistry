@@ -6,25 +6,40 @@ if (!isset($_SESSION['users'])) {
 }
 $users = &$_SESSION['users'];
 
-function register_user($username, $password) {
+function register_user($email, $nickname, $password) {
     global $users;
     
     // Si el usuario ya existe, no permite el registro.
-    if (isset($users[$username])) {
+    if (isset($users[$email])) {
         return false;
+    }
+    foreach ($users as $user_data) {
+        if ($user_data['nickname'] === $nickname) {
+            return false;
+        }
     }
 
     // Usar password_hash para hashear la contraseña
-    $users[$username] = [
-        'username' => $username,
-        // Usamos PASSWORD_BCRYPT por seguridad. El resultado debe almacenarse
-        // en una columna de al menos 60 caracteres (si fuera BD).
-        'password_hash' => password_hash($password, PASSWORD_BCRYPT), 
+    $users[$email] = [
+        'nickname' => $nickname,
+        'email' => $email,
+        'password_hash' => password_hash($password, PASSWORD_DEFAULT), 
     ];
     return true;
 }
 
-function find_user($username) {
+function find_user($email) {
     global $users;
-    return $users[$username] ?? null;
+    return $users[$email] ?? null;
+}
+
+function find_user_by_nickname($nickname) {
+    global $users;
+    foreach ($users as $user_data) {
+        if ($user_data['nickname'] === $nickname) {
+            // Retornamos los datos del usuario si encontramos el nickname
+            return $user_data; 
+        }
+    }
+    return null;
 }
